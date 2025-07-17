@@ -61,7 +61,7 @@ sites:
     active: true
 
 feishu:
-  webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/c84594b9-e8dd-4828-a24d-cb1175f41f3a"
+  webhook_url: "https://open.larksuite.com/open-apis/bot/v2/hook/c78e401d-1a1f-4500-830b-36528b83011a"
   secret: "YOUR_SECRET"
 
 storage:
