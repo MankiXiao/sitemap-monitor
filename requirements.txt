@@ -4,3 +4,4 @@ python-dateutil
 pyyaml
 lxml
 cloudscraper
+feedparser
