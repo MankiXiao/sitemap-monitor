@@ -48,39 +48,94 @@ sites:
       - "https://www.onlinegames.io/sitemap.xml"
     active: true
   - name: "Playhop"
-    sitemap_urls: 
+    sitemap_urls:
       - "https://playhop.com/sitemaps/sitemap.index.xml"
     active: true
   - name: "CrazyGames"
-    sitemap_urls: 
+    sitemap_urls:
       - "https://www.crazygames.com/sitemap-index.xml"
     active: true
-  - name: "Playhop"
-    sitemap_urls: 
-      - "https://playhop.com/sitemaps/sitemap.index.xml"
-    active: true
   - name: "GamePix"
-    sitemap_urls: 
+    sitemap_urls:
       - "https://www.gamepix.com/sitemaps/index.xml"
     active: true
   - name: "Poki"
-    sitemap_urls: 
+    sitemap_urls:
       - "https://poki.com/zh/sitemaps/index.xml"
     active: true
   - name: "DashMetry"
-    sitemap_urls: 
+    sitemap_urls:
       - "https://dashmetry.com/sitemap.xml"
     active: true
   - name: "Gamemonetize"
-    sitemap_urls: 
+    sitemap_urls:
       - "https://gamemonetize.com/sitemap.xml"
     active: true
 
+# -------------------------
+# Signals: Trend Radar
+# -------------------------
+signals:
+  enabled: true
 
+  youtube_search_rss:
+    active: true
+    # 你可以继续加关键词（英文更稳定）
+    queries:
+      - "what game is this"
+      - "name of the game"
+      - "play this game"
+      - "browser game"
+      - "online game"
+      - "io game"
+    max_items: 30
+
+  reddit_rss:
+    active: true
+    feeds:
+      - "https://www.reddit.com/r/webgames/new/.rss"
+      - "https://www.reddit.com/r/playmygame/new/.rss"
+      - "https://www.reddit.com/r/indiegames/new/.rss"
+    max_items: 50
+
+# -------------------------
+# Scoring rules
+# -------------------------
+rules:
+  # 命中这些词直接判为噪音（你可以不断迭代）
+  deny_keywords:
+    - "update"
+    - "patch"
+    - "mod"
+    - "apk"
+    - "download"
+    - "ios"
+    - "android"
+    - "skin"
+    - "cheat"
+
+  # 命中这些词加分（强“找游戏名/求链接”意图）
+  boost_keywords:
+    - "what game is this"
+    - "name of the game"
+    - "where can i play"
+    - "play online"
+    - "link"
+
+  # 分数阈值：越高越少但越准（建议先 6）
+  score_threshold: 6
+
+# -------------------------
+# Feishu
+# -------------------------
 feishu:
+  # 可以留空；GitHub Actions 会用 secrets.FEISHU_WEBHOOK 注入环境变量覆盖
   webhook_url: ""
   secret: "YOUR_SECRET"
 
+# -------------------------
+# Storage
+# -------------------------
 storage:
   retention_days: 7
   data_dir: "./data"
