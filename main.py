@@ -36,6 +36,42 @@ def normalize_url(url: str) -> str:
     except Exception:
         return url
 
+# ========== URL 过滤（降噪关键） ==========
+EXCLUDE_KEYWORDS = [
+    "/tag/",
+    "/tags/",
+    "/category/",
+    "/categories/",
+    "/about",
+    "/privacy",
+    "/terms",
+    "/contact",
+    "/faq",
+    "/policy",
+    "/search",
+    "/sitemap",
+    "/wp-",
+]
+
+def is_valid_game_url(url: str) -> bool:
+    u = url.lower()
+
+    # 1. 黑名单关键词
+    for k in EXCLUDE_KEYWORDS:
+        if k in u:
+            return False
+
+    # 2. 太短的路径（通常不是详情页）
+    try:
+        path = urlsplit(u).path
+        if path.count("/") < 2:
+            return False
+    except Exception:
+        return False
+
+    return True
+
+
 # ========== Sitemap 处理 ==========
 def process_sitemap(url):
     try:
@@ -62,7 +98,9 @@ def parse_xml(content):
     for loc in soup.find_all("loc"):
         u = loc.get_text().strip()
         if u:
-            urls.append(normalize_url(u))
+            nu = normalize_url(u)
+            if is_valid_game_url(nu):
+            urls.append(nu)
     return urls
 
 def parse_txt(text):
@@ -70,7 +108,9 @@ def parse_txt(text):
     for line in text.splitlines():
         line = line.strip()
         if line.startswith("http"):
-            urls.append(normalize_url(line))
+            nu = normalize_url(line)
+            if is_valid_game_url(nu):
+                urls.append(nu)
     return urls
 
 # ========== 数据存储 ==========
